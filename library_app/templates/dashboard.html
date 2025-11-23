@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+<div class="w-75 mx-auto mt-5">
+<nav class="navbar bg-body-tertiary border">
+  <div class="container-fluid p-3">
+    <a href='/dashboard' class="navbar-brand ms-5 fs-3"><strong> My Library Dashboard</strong></a>
+    <div class="d-flex">
+        <a href="{% url "book_list" %}" class="btn btn-primary ms-2">Browse All Books</a>
+        <a href="{% url "logout" %}" class="btn btn-danger mx-2">Logout</a>
+    </div>
+  </div>
+</nav>
+<div class="d-flex justify-content-between my-3">
+    <div class="w-25 p-2 border rounded">
+        <p class="text-center fs-1 text-primary mb-0 fw-bold">{{current_borrow_books|length}}</p>
+        <p class="text-center mb-0">Current Loans</p>
+    </div>
+    <div class="w-25 p-2 border rounded">
+        <p class="text-center fs-1 text-danger mb-0 fw-bold">{{overdue_books_count}}</p>
+        <p class="text-center mb-0">Overdue Books</p>
+    </div>
+    <div class="w-25 p-2 border rounded">
+        <p class="text-center fs-1 text-success mb-0 fw-bold">{{available_books_count}}</p>
+        <p class="text-center mb-0">Available Books</p>
+    </div>
+</div>
+<div class="card mb-3">
+    <div class="card-header">
+        <p class="fw-bold mb-0">Current Borrowed Books</p>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered">
+        <thead>
+            <tr class="table-secondary">
+            <th scope="col">Book Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Borrowed Date</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for book in current_borrow_books %}
+            <tr>
+            <td>{{book.book.title}}</td>
+            <td>{{book.book.author}}</td>
+            <td>{{book.borrowed_at}}</td>
+            <td>{{book.due_date}}</td>
+            <td>
+                {% if book.due_date < today %}
+                <a style="background-color: #ef937cff;" class="border rounded p-1 text-decoration-none text-danger fw-bold">Overdue</a>
+                {% else %}
+                <a style="background-color: #959bf0ff;" class="border rounded p-1 text-decoration-none text-primary fw-bold">Current</a>
+                {% endif %}
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<div class="card mb-3">
+    <div class="card-header">
+        <p class="fw-bold mb-0">Available Books for Borrowing</p>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered">
+        <thead>
+            <tr class="table-secondary">
+            <th scope="col">Book Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Availabe Copies</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for book in books %}
+            <tr>
+            <td>{{book.title}}</td>
+            <td>{{book.author}}</td>
+            <td>{{book.isbn}}</td>
+            <td>{{book.available_copies}}</td>
+            <td>
+            {% if book.available_copies > 0 %}
+            <a href="{% url "borrow_book" book.id %}" class="bg-primary border rounded p-1 text-decoration-none text-white">BorrowBook</a>
+            {% else %}
+            <a  class="bg-secondary border rounded p-1 text-decoration-none text-white">NotAvailable</a>
+            {% endif %}
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+    </div>
+</div>
+<div class="card mb-3">
+    <div class="card-header">
+        <p class="fw-bold mb-0">Borrowing History</p>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover table-bordered">
+        <thead>
+            <tr class="table-secondary">
+            <th scope="col">Book Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Borrowed Date</th>
+            <th scope="col">Retured Date</th>
+            <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for book  in borrowing_history %}
+            <tr>
+            <td>{{book.book.title}}</td>
+            <td>{{book.book.author}}</td>
+            <td>{{book.borrowed_at}}</td>
+            <td>{{book.returned_at}}</td>
+            <td>
+                <a style="background-color: #9ef095ff;" class="border rounded p-1 text-decoration-none text-success fw-bolder">Returned</a>
+            </td>
+            </tr>
+        </tbody>
+        {% endfor %}
+        </table>
+    </div>
+</div>
+</div>
+{% endblock content %}

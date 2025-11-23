@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Add Book{% endblock title %}
+{% block content %}
+<div class='w-50 mx-auto my-5'>
+<form class="row g-3" method="post">
+    {% csrf_token %}
+    <div class="col-md-6">
+        <h2 class="fs-3"><strong>Add New Book</strong></h2>
+    </div>
+    <div class="col-md-6 d-flex justify-content-end">
+        <a href="{% url "book_list" %}" class="btn btn-secondary">Back to Books</a>
+    </div>
+    <div class="col-12">
+        <label for="inputAddress" class="form-label"><strong>Book Title *</strong></label>
+        <input type="text" name="title" required class="form-control" id="inputAddress">
+    </div>
+    <div class="col-md-6">
+        <label for="inputEmail4" class="form-label"><strong>Author *</strong></label>
+        <input type="text" required name="author" class="form-control" id="inputEmail4">
+    </div>
+    <div class="col-md-6">
+        <label for="inputPassword4" class="form-label"><strong>ISBN *</strong></label>
+        <input type="text" required name="isbn" class="form-control" id="inputPassword4">
+    </div>
+    <div class="col-md-6">
+        <label for="inputState" class="form-label"><strong>Category *</strong></label>
+        <input type="text" id="inputState" required name="genre" class="form-control">
+    </div>
+    <div class="col-md-6">
+        <label for="inputCity" class="form-label"><strong>Pages </strong></label>
+        <input type="number" name="pages" class="form-control" id="inputCity">
+    </div>
+    <div class="col-md-6">
+        <label for="inputCity1" class="form-label"><strong>Total Copies </strong></label>
+        <input type="number" name="total_copies" class="form-control" id="inputCity1">
+    </div>
+    <div class="col-md-6">
+        <label for="inputCity2" class="form-label"><strong>Available Copies </strong></label>
+        <input type="number" name="available_copies" class="form-control" id="inputCity2">
+    </div>
+    <div class="col-12">
+        <label for="inputZip" class="form-label"><strong>Description</strong></label>
+        <input type="text" name="description" class="form-control" id="inputZip">
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Save Book</button>
+    </div>
+</form>
+</div>
+{% endblock content %}
